@@ -1,3 +1,3 @@
 # Leprechaun
 
-Main repository for
+Main repository for our new fintech app
