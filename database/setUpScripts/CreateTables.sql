@@ -2,14 +2,18 @@ Create Table user(
   id            bigint(20) Not Null AUTO_INCREMENT,
   username      VARCHAR(50),
   email         VARCHAR(50),
-  PRIMARY KEY(id)
+  PRIMARY KEY(id),
+  CONSTRAINT username_unique UNIQUE (username),
+  CONSTRAINT email_unique UNIQUE (email)
 );
 
 Create Table portfolio(
-  id            bigint(20) Not Null AUTO_INCREMENT,
+  id            bigint(20)    Not Null AUTO_INCREMENT,
   title         VARCHAR(50),
   description   VARCHAR(1000),
-  PRIMARY KEY(id)
+  ownedBy       bigint(20)    REFERENCES user(id),
+  PRIMARY KEY(id),
+  CONSTRAINT title_per_user_unique UNIQUE (title, ownedBy)
 );
 
 Create Table tag(
@@ -26,10 +30,13 @@ Create Table stock(
 
 Create Table porfolioTags(
   portfolioId    bigint(20)   REFERENCES portfolio(id),
-  tag            VARCHAR(50)  REFERENCES tag(name)
+  tag            VARCHAR(50)  REFERENCES tag(name),
+  PRIMARY KEY(portfolioId, tag)
 );
 
-Create Table owns(
-  userId    bigint(20)        REFERENCES user(id),
-  portfolioId    bigint(20)   REFERENCES portfolio(id)
+Create Table tracks(
+  userId         bigint(20)   REFERENCES user(id),
+  portfolioId    bigint(20)   REFERENCES portfolio(id),
+  hasPurchased   BOOLEAN,
+  PRIMARY KEY(userId, portfolioId)   
 );
