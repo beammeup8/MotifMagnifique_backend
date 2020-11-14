@@ -15,11 +15,11 @@ def read_sql_file(filename, cursor):
     except Exception as msg:
       print("Command skipped: ", msg)
 
+def getYamlFileContents(filename):
+  with open(filename) as file:
+    return yaml.load(file, Loader=yaml.FullLoader)
 
-login_info = {}
-
-with open('loginInfo.yaml') as file:
-  login_info = yaml.load(file, Loader=yaml.FullLoader)
+login_info = getYamlFileContents('loginInfo.yaml')
 
 conn = mariadb.connect(
     user=login_info['username'],
@@ -28,7 +28,11 @@ conn = mariadb.connect(
 
 cur = conn.cursor() 
 
-read_sql_file('setUpScripts/CreateDatabase.sql', cur)
-read_sql_file('setUpScripts/CreateTables.sql', cur)
-    
+path = "setUpScripts/"
+
+config = getYamlFileContents(path + "scriptConfig.yaml")
+
+for filename in config['sqlToRun']:
+  read_sql_file(path + filename, cur)
+  
 conn.close()

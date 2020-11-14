@@ -1,0 +1,3 @@
+sqlToRun:
+  - CreateDatabase.sql
+  - CreateTables.sql
