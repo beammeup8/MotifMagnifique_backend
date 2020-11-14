@@ -2,12 +2,24 @@
 import mariadb 
 import yaml
 
+def read_sql_file(filename, cursor):
+  sql = ''
+  with open(filename) as file:
+    sql = file.read()
+
+  commands = sql.split(';')
+  for command in commands:
+    try:
+      if command.strip() != '':
+          cursor.execute(command)
+    except Exception as msg:
+      print("Command skipped: ", msg)
+
+
 login_info = {}
 
 with open('loginInfo.yaml') as file:
   login_info = yaml.load(file, Loader=yaml.FullLoader)
-
-print(login_info)
 
 conn = mariadb.connect(
     user=login_info['username'],
@@ -16,9 +28,7 @@ conn = mariadb.connect(
 
 cur = conn.cursor() 
 
-cur.execute("SHOW DATABASES")
-
-for x in cur:
-  print(x)
+read_sql_file('setUpScripts/CreateDatabase.sql', cur)
+read_sql_file('setUpScripts/CreateTables.sql', cur)
     
 conn.close()
