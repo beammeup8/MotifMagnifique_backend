@@ -7,45 +7,28 @@ This is a PostgreSQL database. To create a local instance please run the start.s
 The following tools need to be installed to start the database:
 * [python 3](https://www.python.org/)
 * [pip3](https://pip.pypa.io/en/stable/installing/)
-* [postgreSQL](https://www.postgresql.org/)
-* [postgreSQL connector](https://www.psycopg.org/docs/install.html#install-from-source)
+* pyyaml - install via pip3
+* [mariadb](https://mariadb.com/downloads/)
+* [mariadb python connector](https://mariadb.com/resources/blog/how-to-connect-python-programs-to-mariadb/s)
 
 ## Starting the database
 
 ### Setting up the database enviroment
 
-1. Start by switching to the default postgres user
+1. Insure you can run mariadb locally by running
 ```
-sudo su postgres
+sudo mysql
 ```
-2. Then run the PostgreSQL shell
+
+2. create a yaml file named `loginInfo.yaml` with the following format:
 ```
-psql
-```
-3. Create new admin user
-```
-CREATE USER admin WITH PASSWORD 'password';
-```
-4. Give the admin user admin permissions
-```
-ALTER USER admin WITH SUPERUSER;
-```
-5. Create Database
-```
-CREATE DATABASE Glowstick;
-```
-6. Quit the prompt
-```
-\q
-```
-7. Return to your standard user profile (enter your user password when prompted)
-```
-su <username>
+username: "root"
+password: "<your root password>"
 ```
 
 ### Running the database
 
 The database can be started for local development work using the following command:
 ```
-python3 setUpScripts/startDB.py
+sudo python3 startDB.py
 ```
