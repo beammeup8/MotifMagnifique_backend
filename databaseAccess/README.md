@@ -7,5 +7,5 @@ This is a Scala application to communicate between the front end and the databas
 To run this application run the following command
 
 ```
-sbt run
+<Command here>
 ```
