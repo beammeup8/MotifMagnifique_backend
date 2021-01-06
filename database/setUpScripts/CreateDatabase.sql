@@ -1,7 +1,7 @@
-DROP Database IF Exists glowstick;
+DROP Database IF Exists motifMagnifique;
 
-Create Database glowstick;
-Use glowstick;
+Create Database motifMagnifique;
+Use motifMagnifique;
 
 
 Drop USER IF Exists user;
