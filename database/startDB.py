@@ -1,38 +1,29 @@
 #!/usr/bin/python 
 import mariadb 
-import yaml
+import sys
+import os
+curr_dir = os.getcwd()
+sys.path.append(curr_dir)
+from utilities import configFileFunctions
+from database.Database import Database
 
-def read_sql_file(filename, cursor):
-  sql = ''
-  with open(filename) as file:
-    sql = file.read()
+print("Starting Database creation...")
+db = Database(curr_dir + '/database/loginInfo.yaml')
 
-  commands = sql.split(';')
-  for command in commands:
-    try:
-      if command.strip() != '':
-          cursor.execute(command)
-    except Exception as msg:
-      print("Command skipped: ", msg)
+print("Connecting to database...")
+cur = db.cur 
 
-def getYamlFileContents(filename):
-  with open(filename) as file:
-    return yaml.load(file, Loader=yaml.FullLoader)
+print("Successfully connected...")
 
-login_info = getYamlFileContents('loginInfo.yaml')
+path = curr_dir + "/database/setUpScripts/"
 
-conn = mariadb.connect(
-    user=login_info['username'],
-    password=login_info['password'],
-    host="localhost")
-
-cur = conn.cursor() 
-
-path = "setUpScripts/"
-
-config = getYamlFileContents(path + "scriptConfig.yaml")
+config = configFileFunctions.getYamlFileContents(path + "scriptConfig.yaml")
 
 for filename in config['sqlToRun']:
-  read_sql_file(path + filename, cur)
+  print("    Running SQL scripts from " + filename + "...")
+  db.execute_sql_file(path + filename)
   
-conn.close()
+print("All SQL scripts run, Closing connection...")
+db.close_connection()
+
+print("Connection closed")

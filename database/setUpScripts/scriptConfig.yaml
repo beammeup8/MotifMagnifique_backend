@@ -1,3 +1,7 @@
 sqlToRun:
-  - CreateDatabase.sql
-  - CreateTables.sql
+  - InitialDatabase.sql
+  - Tables.sql
+  - CreateStoredProcedures.sql
+  - ReadStoredProcedures.sql
+  - UpdateStoredProcedures.sql
+  - DeleteStoredProcedures.sql
