@@ -1,3 +1,5 @@
+DELIMITER //
+
 Create Procedure 
   CreateUser
   (p_username VARCHAR(50),
@@ -8,6 +10,6 @@ Create Procedure
   p_salt CHAR(50))
   MODIFIES SQL DATA
   BEGIN
-  INSERT INTO user(username, email, fname, lname, password, salt) 
-  VALUES (p_username, p_email, p_fname, p_lname, p_password, p_salt);
-  END;
+    INSERT INTO user (username, email, fName, lName, password, salt)
+    VALUES (p_username, p_email, p_fName, p_lName, p_password, p_salt);
+  END //

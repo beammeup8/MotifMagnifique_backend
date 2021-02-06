@@ -10,6 +10,7 @@ The following tools need to be installed to start the database:
 * pyyaml - install via pip3
 * [mariadb](https://mariadb.com/downloads/)
 * [mariadb python connector](https://mariadb.com/resources/blog/how-to-connect-python-programs-to-mariadb/s)
+* [shyaml](https://github.com/0k/shyaml) - bash yaml parser, that is installed via pip, but must be installed as the root user
 
 ## Starting the database
 
@@ -20,15 +21,11 @@ The following tools need to be installed to start the database:
 sudo mysql
 ```
 
-2. create a yaml file named `loginInfo.yaml` with the following format:
-```
-username: "root"
-password: "<your root password>"
-```
-
 ### Running the database
 
-The database can be started for local development work using the following command:
+1. Start the database for local development work using the following command:
 ```
-sudo python3 startDB.py
+sudo bash database/runAllSQL.bash
 ```
+2. Enter your root password when prompted
+3. All sql scripts will be run
