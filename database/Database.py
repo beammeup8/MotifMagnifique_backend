@@ -12,22 +12,12 @@ class Database:
     self.conn = mariadb.connect(
       user=login_info['username'],
       password=login_info['password'],
-      host="localhost"
+      host=login_info['host']
     )
-    self.cur = self.conn.cursor() 
+    self.cur = self.conn.cursor()
 
-  def execute_sql_file(self, filename):
-    sql = ''
-    with open(filename) as file:
-      sql = file.read()
-
-    commands = sql.split(';')
-    for command in commands:
-      try:
-        if command.strip() != '':
-            self.cur.execute(command)
-      except Exception as msg:
-        print("Command skipped: ", msg)
+  def callStoredProcedure(procedureName, argsArray):
+    self.cur.callproc(procedureName, argsArray.append(0))
 
   def close_connection(self):
     self.conn.close()

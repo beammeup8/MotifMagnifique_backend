@@ -5,7 +5,8 @@ Create Table user(
   fName         VARCHAR(50) DEFAULT NULL,
   lName         VARCHAR(50) DEFAULT NULL,
   password      VARCHAR(50),
-  salt          CHAR(50),
+  front_salt    CHAR(50),
+  back_salt     CHAR(50),
   PRIMARY KEY(id),
   CONSTRAINT username_unique UNIQUE (username),
   CONSTRAINT email_unique UNIQUE (email)
