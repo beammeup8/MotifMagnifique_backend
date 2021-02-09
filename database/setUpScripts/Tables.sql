@@ -14,14 +14,18 @@ Create Table user(
 
 Create Table authtoken(
   userId        bigint(20)  REFERENCES user(id),
-  last_accessed TIMESTAMP
+  authtoken     VARCHAR(50) DEFAULT NULL,
+  last_accessed TIMESTAMP,
+  setable       BOOLEAN,
+  PRIMARY KEY(userId)
 );
 
 Create Table tag(
   id            bigint(20) Not Null AUTO_INCREMENT,
   name          VARCHAR(50),
   value         VARCHAR(50),
-  PRIMARY KEY(id)
+  PRIMARY KEY(id),
+  CONSTRAINT tag_unique UNIQUE (name, value)
 );
 
 Create Table pattern(
