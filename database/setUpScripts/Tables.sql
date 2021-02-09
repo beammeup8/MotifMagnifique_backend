@@ -12,10 +12,16 @@ Create Table user(
   CONSTRAINT email_unique UNIQUE (email)
 );
 
+Create Table authtoken(
+  userId        bigint(20)  REFERENCES user(id),
+  last_accessed TIMESTAMP
+);
+
 Create Table tag(
+  id            bigint(20) Not Null AUTO_INCREMENT,
   name          VARCHAR(50),
   value         VARCHAR(50),
-  PRIMARY KEY(name)
+  PRIMARY KEY(id)
 );
 
 Create Table pattern(
@@ -31,7 +37,7 @@ Create Table pattern(
 
 Create Table patternTag(
   pattern       bigint(20) REFERENCES pattern(id),
-  tag           VARCHAR(50) REFERENCES tag(name),
+  tag           VARCHAR(50) REFERENCES tag(id),
   PRIMARY KEY(pattern, tag)
 );
 
@@ -46,7 +52,7 @@ Create Table fabric(
 
 Create Table fabricTag(
   fabric        bigint(20) REFERENCES fabric(id),
-  tag           VARCHAR(50) REFERENCES tag(name),
+  tag           VARCHAR(50) REFERENCES tag(id),
   PRIMARY KEY(fabric, tag)
 );
 

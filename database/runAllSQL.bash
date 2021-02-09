@@ -9,10 +9,7 @@ password=$($fileContents | shyaml get-value password)
 
 filesToRun=(
   Tables.sql
-  CreateStoredProcedures.sql
-  ReadStoredProcedures.sql
-  UpdateStoredProcedures.sql
-  DeleteStoredProcedures.sql
+  UserStoredProcedures.sql
   )
 
 

@@ -14,3 +14,9 @@ Create Procedure
     INSERT INTO user (username, email, fName, lName, password, front_salt, back_salt)
     VALUES (p_username, p_email, p_fName, p_lName, p_password, p_front_salt, p_back_salt);
   END //
+
+  Create Procedure
+  CheckPassword (p_username VARCHAR(20), p_password VARCHAR(50))
+  BEGIN
+    SELECT * FROM user WHERE username=p_username AND password=p_password;
+  END //

@@ -21,7 +21,7 @@ The following tools need to be installed to start the database:
 sudo mysql
 ```
 
-### Running the database
+### Creating the database
 
 1. Start the database for local development work using the following command:
 ```
