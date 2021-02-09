@@ -1,7 +1,0 @@
-GET     /profile/:id                        controllers.UserController.getUser(id: String)
-GET     /suggestedPortfolios/:userId        controllers.UserController.getSuggestedPortfolios(userId: String)
-
-GET     /portfolio/:id                        controllers.PortfolioController.getPortfolio(id: String)
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

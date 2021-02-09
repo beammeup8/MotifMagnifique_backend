@@ -1,0 +1,29 @@
+@startuml
+allowmixing
+
+class Main
+
+package httpConnection
+
+Main ..> httpConnection
+
+class Database{
+ + conn: Connection
+ + cur: Database Cursor
+}
+
+class CreateDatabase extends Database {
+ + executeSQLFile(filename)
+}
+
+abstract class AccessDatabase extends Database{
+ + create(**kwargs)
+ + read(**kwargs)
+ + update(**kwargs)
+ + delete(**kwargs)
+}
+
+
+httpConnection ..>"*" AccessDatabase
+StartDB --> CreateDatabase
+@enduml
