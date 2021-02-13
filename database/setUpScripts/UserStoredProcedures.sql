@@ -16,7 +16,17 @@ Create Procedure
   END //
 
   Create Procedure
-  CheckPassword (p_username VARCHAR(20), p_password VARCHAR(50))
+  CheckPassword (p_username VARCHAR(20), p_password VARCHAR(50), p_authToken CHAR(50))
   BEGIN
-    SELECT * FROM user WHERE username=p_username AND password=p_password;
+    DECLARE userID TYPE OF user.id;
+    DECLARE correct_password TYPE of user.password;
+    
+    SELECT id, password INTO userID, correct_password FROM user WHERE username=p_username;
+    IF correct_password = p_password THEN
+      INSERT INTO authtoken (userId, last_accessed, token)
+      VALUES (userID, NOW(), p_authToken);
+      SELECT TRUE;
+    ELSE
+      SELECT FALSE;
+    END IF;
   END //
