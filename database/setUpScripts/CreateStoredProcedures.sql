@@ -11,3 +11,4 @@ Create Procedure
   INSERT INTO user(username, email, fname, lname, password, salt) 
   VALUES (p_username, p_email, p_fname, p_lname, p_password, p_salt);
   END;
+
