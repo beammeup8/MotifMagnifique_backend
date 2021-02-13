@@ -5,16 +5,27 @@ Create Table user(
   fName         VARCHAR(50) DEFAULT NULL,
   lName         VARCHAR(50) DEFAULT NULL,
   password      VARCHAR(50),
-  salt          CHAR(50),
+  front_salt    CHAR(50),
+  back_salt     CHAR(50),
   PRIMARY KEY(id),
   CONSTRAINT username_unique UNIQUE (username),
   CONSTRAINT email_unique UNIQUE (email)
 );
 
+Create Table authtoken(
+  userId        bigint(20)  REFERENCES user(id),
+  authtoken     VARCHAR(50) DEFAULT NULL,
+  last_accessed TIMESTAMP,
+  setable       BOOLEAN,
+  PRIMARY KEY(userId)
+);
+
 Create Table tag(
+  id            bigint(20) Not Null AUTO_INCREMENT,
   name          VARCHAR(50),
   value         VARCHAR(50),
-  PRIMARY KEY(name)
+  PRIMARY KEY(id),
+  CONSTRAINT tag_unique UNIQUE (name, value)
 );
 
 Create Table pattern(
@@ -30,7 +41,7 @@ Create Table pattern(
 
 Create Table patternTag(
   pattern       bigint(20) REFERENCES pattern(id),
-  tag           VARCHAR(50) REFERENCES tag(name),
+  tag           VARCHAR(50) REFERENCES tag(id),
   PRIMARY KEY(pattern, tag)
 );
 
@@ -45,7 +56,7 @@ Create Table fabric(
 
 Create Table fabricTag(
   fabric        bigint(20) REFERENCES fabric(id),
-  tag           VARCHAR(50) REFERENCES tag(name),
+  tag           VARCHAR(50) REFERENCES tag(id),
   PRIMARY KEY(fabric, tag)
 );
 
