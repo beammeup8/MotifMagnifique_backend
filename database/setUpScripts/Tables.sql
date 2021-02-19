@@ -41,7 +41,7 @@ Create Table pattern(
 
 Create Table patternTag(
   pattern       bigint(20) REFERENCES pattern(id),
-  tag           VARCHAR(50) REFERENCES tag(id),
+  tag           VARCHAR(20) REFERENCES tag(id),
   PRIMARY KEY(pattern, tag)
 );
 

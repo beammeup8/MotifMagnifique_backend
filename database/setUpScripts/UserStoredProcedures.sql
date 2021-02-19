@@ -13,9 +13,18 @@ Create Procedure
   BEGIN
     INSERT INTO user (username, email, fName, lName, password, front_salt, back_salt)
     VALUES (p_username, p_email, p_fName, p_lName, p_password, p_front_salt, p_back_salt);
+    INSERT INTO authtoken (userId, last_accessed, token)
+      VALUES (userID, NOW(), NULL);
   END //
 
-  Create Procedure
+Create Procedure
+  GetUserId
+  (p_username VARCHAR(50))
+  BEGIN
+    SELECT id FROM user WHERE username=p_username;
+  END //
+
+Create Procedure
   CheckPassword (p_username VARCHAR(20), p_password VARCHAR(50), p_authToken CHAR(50))
   BEGIN
     DECLARE userID TYPE OF user.id;
@@ -23,10 +32,26 @@ Create Procedure
     
     SELECT id, password INTO userID, correct_password FROM user WHERE username=p_username;
     IF correct_password = p_password THEN
-      INSERT INTO authtoken (userId, last_accessed, token)
-      VALUES (userID, NOW(), p_authToken);
+      UPDATE authtoken SET last_accessed = NOW(), token = p_authToken WHERE userId = userID;
       SELECT TRUE;
     ELSE
       SELECT FALSE;
     END IF;
   END //
+
+Create Procedure
+  CheckAuthToken (p_username VARCHAR(20), p_authToken CHAR(50))
+  BEGIN
+    DECLARE userID TYPE OF user.id;
+    DECLARE correct_token TYPE OF authtoken.token;
+
+    SELECT user.id, token INTO userID, correct_token
+    FROM authtoken, user WHERE user.username = p_username;
+    
+    IF correct_token = p_authToken THEN
+      UPDATE authtoken SET last_accessed = NOW() WHERE userId = userID;
+      SELECT TRUE;
+    ELSE
+      SELECT FALSE;
+    END IF;
+  END//
