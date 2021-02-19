@@ -18,13 +18,6 @@ Create Procedure
   END //
 
 Create Procedure
-  GetUserId
-  (p_username VARCHAR(50))
-  BEGIN
-    SELECT id FROM user WHERE username=p_username;
-  END //
-
-Create Procedure
   CheckPassword (p_username VARCHAR(20), p_password VARCHAR(50), p_authToken CHAR(50))
   BEGIN
     DECLARE userID TYPE OF user.id;
@@ -39,19 +32,40 @@ Create Procedure
     END IF;
   END //
 
-Create Procedure
-  CheckAuthToken (p_username VARCHAR(20), p_authToken CHAR(50))
+Create Function
+  CheckAuthToken (
+    p_username VARCHAR(20),
+    p_authToken CHAR(50)
+    )
+  RETURNS BOOLEAN
   BEGIN
     DECLARE userID TYPE OF user.id;
     DECLARE correct_token TYPE OF authtoken.token;
+    DECLARE is_valid BOOLEAN;
 
     SELECT user.id, token INTO userID, correct_token
     FROM authtoken, user WHERE user.username = p_username;
     
-    IF correct_token = p_authToken THEN
+    SET is_valid = (correct_token = p_authToken);
+    
+    IF is_valid THEN
       UPDATE authtoken SET last_accessed = NOW() WHERE userId = userID;
-      SELECT TRUE;
+    END IF;
+    RETURN is_valid;
+  END//
+
+Create Procedure
+  GetUserDetails (p_username VARCHAR(20), p_authToken CHAR(50))
+  BEGIN
+    DECLARE is_valid BOOLEAN;
+
+    SET is_valid = CheckAuthToken(p_username, p_authToken);
+
+    IF is_valid THEN
+      SELECT username, email, fName, lName 
+      FROM user
+      WHERE username = p_username;
     ELSE
-      SELECT FALSE;
+      SELECT NULL;
     END IF;
   END//
