@@ -39,17 +39,21 @@ Create Function
     )
   RETURNS BOOLEAN
   BEGIN
-    DECLARE userID TYPE OF user.id;
-    DECLARE correct_token TYPE OF authtoken.token;
+    DECLARE accessed_time TYPE OF authtoken.last_accessed;
+    DECLARE time_out TYPE OF authtoken.timeout_len;
+    DECLARE curr_time TYPE OF authtoken.last_accessed;
     DECLARE is_valid BOOLEAN;
 
-    SELECT user.id, token INTO userID, correct_token
-    FROM authtoken, user WHERE user.username = p_username;
+    SELECT last_accessed, timeout_len INTO accessed_time, time_out
+    FROM authtoken, user 
+    WHERE user.username = p_username
+    AND authtoken.token = p_authToken;
     
-    SET is_valid = (correct_token = p_authToken);
-    
+    SET curr_time = NOW();
+    SET is_valid = (curr_time - accessed_time < (time_out * 60000));
+
     IF is_valid THEN
-      UPDATE authtoken SET last_accessed = NOW() WHERE userId = userID;
+      UPDATE authtoken SET last_accessed = curr_time WHERE userId = userID;
     END IF;
     RETURN is_valid;
   END//
