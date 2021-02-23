@@ -71,3 +71,9 @@ Create Procedure
       SELECT NULL;
     END IF;
   END//
+
+Create Procedure
+  GetSalts (p_username VARCHAR(20))
+  BEGIN
+    SELECT front_salt, back_salt from user where username = p_username;
+  END//
