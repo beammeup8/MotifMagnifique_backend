@@ -13,6 +13,7 @@ filesToRun=(
   MiscStoredProcedures.sql
   PatternStoredProcedures.sql
   FabricStoreProcedures.sql
+  ProjectStoredProcedures.sql
   )
 
 
