@@ -13,12 +13,14 @@ DELIMITER //
   
   END 
 //    
+
 Create Procedure 
 CreateUnit
 (u_name               VARCHAR(20),
 u_cmLen               DOUBLE(10,4),
-u_displayFrac         TINYINT(1) DEFAULT 1)
-  
+u_displayFrac         BOOLEAN
+)
+
 MODIFIES SQL DATA
   
 BEGIN
@@ -27,7 +29,6 @@ BEGIN
   
 END 
 
-  
 // 
 
   

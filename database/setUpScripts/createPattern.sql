@@ -4,7 +4,7 @@ DELIMITER //
   CreatePattern
   (p_title      VARCHAR(50),
   p_desc        VARCHAR(1000),
-  p_price       DOUBLE(10,2) DEFAULT NULL,
+  p_price       DOUBLE(10,2),
   p_link        VARCHAR(1000)
   )
   
@@ -18,4 +18,3 @@ DELIMITER //
   
   
   // 
-
