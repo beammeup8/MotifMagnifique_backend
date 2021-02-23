@@ -14,9 +14,9 @@ Create Table user(
 
 Create Table authtoken(
   userId        bigint(20)  REFERENCES user(id),
-  authtoken     VARCHAR(50) DEFAULT NULL,
   last_accessed TIMESTAMP,
-  setable       BOOLEAN,
+  token         CHAR(50),
+  timeout_len   INT DEFAULT 30,
   PRIMARY KEY(userId)
 );
 
@@ -25,7 +25,7 @@ Create Table tag(
   name          VARCHAR(50),
   value         VARCHAR(50),
   PRIMARY KEY(id),
-  CONSTRAINT tag_unique UNIQUE (name, value)
+  CONSTRAINT tags_unique UNIQUE (name, value)
 );
 
 Create Table pattern(
@@ -41,7 +41,7 @@ Create Table pattern(
 
 Create Table patternTag(
   pattern       bigint(20) REFERENCES pattern(id),
-  tag           VARCHAR(50) REFERENCES tag(id),
+  tag           VARCHAR(20) REFERENCES tag(id),
   PRIMARY KEY(pattern, tag)
 );
 
