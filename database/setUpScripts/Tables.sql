@@ -1,7 +1,7 @@
 Create Table user(
   id            bigint(20) Not Null AUTO_INCREMENT,
   username      VARCHAR(50),
-  email         VARCHAR(50),
+  email         VARCHAR(50)/*check for email pattern*/,
   fName         VARCHAR(50) DEFAULT NULL,
   lName         VARCHAR(50) DEFAULT NULL,
   password      VARCHAR(50),
