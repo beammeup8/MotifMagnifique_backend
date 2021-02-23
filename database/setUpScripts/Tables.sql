@@ -1,7 +1,7 @@
 Create Table user(
   id            bigint(20) Not Null AUTO_INCREMENT,
   username      VARCHAR(50),
-  email         VARCHAR(50),
+  email         VARCHAR(50)/*check for email pattern*/,
   fName         VARCHAR(50) DEFAULT NULL,
   lName         VARCHAR(50) DEFAULT NULL,
   password      VARCHAR(50),
@@ -39,10 +39,22 @@ Create Table pattern(
   CONSTRAINT title_per_user_unique UNIQUE (title, ownedBy)
 );
 
+/*Create PatternImage table, should have pattern ID and link to images*/
+
 Create Table patternTag(
   pattern       bigint(20) REFERENCES pattern(id),
-  tag           VARCHAR(20) REFERENCES tag(id),
+  tag           bigint(20) REFERENCES tag(id),
   PRIMARY KEY(pattern, tag)
+);
+
+Create Table fabricType(
+  id            bigint(20) Not Null AUTO_INCREMENT,  
+  name          VARCHAR(100),
+  /*
+  * name must be unique
+  * fabric type (non-woven, woven or knit)
+  */         
+  PRIMARY KEY(id)
 );
 
 Create Table fabric(
@@ -51,27 +63,25 @@ Create Table fabric(
   brand         VARCHAR(100) DEFAULT NULL,
   link          VARCHAR(1000) DEFAULT NULL,
   fabricType    bigint(20)  REFERENCES fabricType(id),
+  /*width and width unit*/
+  /*add an added by attribute linking to a user id*/
   PRIMARY KEY(id)
 );
 
 Create Table fabricTag(
   fabric        bigint(20) REFERENCES fabric(id),
-  tag           VARCHAR(50) REFERENCES tag(id),
+  tag           bigint(20) REFERENCES tag(id),
   PRIMARY KEY(fabric, tag)
 );
 
 Create Table fabricStash(
   user          bigint(20) REFERENCES user(id),
   fabric        bigint(20) REFERENCES fabric(id),
+  /*length, and length unit*/
   PRIMARY KEY(user, fabric)
 );
 
-Create Table fabricType(
-  id            bigint(20) Not Null AUTO_INCREMENT,  
-  name          VARCHAR(100),         
-  PRIMARY KEY(id)
-);
-
+/*move to higher up*/
 Create Table unit(
   name          VARCHAR(20),
   cmLen         DOUBLE(10,4),
@@ -80,6 +90,7 @@ Create Table unit(
 );
 
 Create Table patternFabricType(
+  /*name for specifc use of fabric*/
   pattern       bigint(20) REFERENCES pattern(id),
   fabricType    bigint(20) REFERENCES fabricType(id),
   amount        DOUBLE(10,4),
@@ -89,9 +100,11 @@ Create Table patternFabricType(
   PRIMARY KEY(pattern, fabricType)
 );
 
+/* missing the user who created it and a unique constraint between name and user*/
 Create Table size(
   id            bigint(20) Not Null AUTO_INCREMENT,
   name          VARCHAR(50) DEFAULT NULL,
+  sizeAuth      bigint(20)   DEFAULT NULL,
   neck          DOUBLE(10,4) DEFAULT NULL,
   shoulder      DOUBLE(10,4) DEFAULT NULL,
   armLength     DOUBLE(10,4) DEFAULT NULL,
@@ -107,6 +120,7 @@ Create Table size(
   backRise      DOUBLE(10,4) DEFAULT NULL,
   inseam        DOUBLE(10,4) DEFAULT NULL,
   outseam       DOUBLE(10,4) DEFAULT NULL,
+  unit    VARCHAR(20) REFERENCES unit(name),
   PRIMARY KEY(id)
 );
 
@@ -126,10 +140,14 @@ create Table project(
   PRIMARY KEY(id)
 );
 
+/*project fabric table, links a project to a specific fabric, with a note on use*/
+/*project image table*/
 
 Create Table favoritePattern(
   userId         bigint(20)   REFERENCES user(id),
   patternId      bigint(20)   REFERENCES pattern(id),
-  hasPurchased   BOOLEAN,
+  hasPurchased   BOOLEAN, /*remove once the purchasedPatterns is added*/
   PRIMARY KEY(userId, patternId)   
 );
+
+/*PurchasedPattern is like favorites, but has a transaction number*/

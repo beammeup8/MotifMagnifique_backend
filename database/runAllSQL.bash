@@ -10,6 +10,10 @@ password=$($fileContents | shyaml get-value password)
 filesToRun=(
   Tables.sql
   UserStoredProcedures.sql
+  MiscStoredProcedures.sql
+  PatternStoredProcedures.sql
+  FabricStoreProcedures.sql
+  ProjectStoredProcedures.sql
   )
 
 

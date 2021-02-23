@@ -77,3 +77,5 @@ Create Procedure
   BEGIN
     SELECT front_salt, back_salt from user where username = p_username;
   END//
+
+/*delete user, remove everything but username and id*/
