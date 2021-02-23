@@ -1,5 +1,6 @@
 DELIMITER //
 
+/* should be function, needs to return the id, and get existing id if exisits */
   Create Procedure 
   CreateTag
   (t_name VARCHAR(50),
@@ -11,8 +12,7 @@ DELIMITER //
     INSERT INTO tag(name, value) 
     VALUES (t_name, t_value);
   
-  END 
-//    
+  END //    
 
 Create Procedure 
 CreateUnit
@@ -27,8 +27,10 @@ BEGIN
   INSERT INTO unit(name, cmLen, displayFrac) 
   VALUES (u_name, u_cmLen, u_displayFrac);
   
-END 
+END // 
 
-// 
-
-  
+Create Procedure
+CreateSize (/*params here, including auth token and user id*/)
+BEGIN
+/* authenticate then create one */
+END //
