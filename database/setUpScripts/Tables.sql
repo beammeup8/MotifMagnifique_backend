@@ -41,8 +41,14 @@ Create Table pattern(
 
 Create Table patternTag(
   pattern       bigint(20) REFERENCES pattern(id),
-  tag           VARCHAR(20) REFERENCES tag(id),
+  tag           bigint(20) REFERENCES tag(id),
   PRIMARY KEY(pattern, tag)
+);
+
+Create Table fabricType(
+  id            bigint(20) Not Null AUTO_INCREMENT,  
+  name          VARCHAR(100),         
+  PRIMARY KEY(id)
 );
 
 Create Table fabric(
@@ -56,7 +62,7 @@ Create Table fabric(
 
 Create Table fabricTag(
   fabric        bigint(20) REFERENCES fabric(id),
-  tag           VARCHAR(50) REFERENCES tag(id),
+  tag           bigint(20) REFERENCES tag(id),
   PRIMARY KEY(fabric, tag)
 );
 
@@ -66,11 +72,6 @@ Create Table fabricStash(
   PRIMARY KEY(user, fabric)
 );
 
-Create Table fabricType(
-  id            bigint(20) Not Null AUTO_INCREMENT,  
-  name          VARCHAR(100),         
-  PRIMARY KEY(id)
-);
 
 Create Table unit(
   name          VARCHAR(20),
@@ -92,6 +93,7 @@ Create Table patternFabricType(
 Create Table size(
   id            bigint(20) Not Null AUTO_INCREMENT,
   name          VARCHAR(50) DEFAULT NULL,
+  sizeAuth      bigint(20)   DEFAULT NULL,
   neck          DOUBLE(10,4) DEFAULT NULL,
   shoulder      DOUBLE(10,4) DEFAULT NULL,
   armLength     DOUBLE(10,4) DEFAULT NULL,
@@ -107,6 +109,7 @@ Create Table size(
   backRise      DOUBLE(10,4) DEFAULT NULL,
   inseam        DOUBLE(10,4) DEFAULT NULL,
   outseam       DOUBLE(10,4) DEFAULT NULL,
+  unit    VARCHAR(20) REFERENCES unit(name),
   PRIMARY KEY(id)
 );
 
