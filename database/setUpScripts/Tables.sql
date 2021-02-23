@@ -141,7 +141,7 @@ create Table project(
 );
 
 /*project fabric table, links a project to a specific fabric, with a note on use*/
-
+/*project image table*/
 
 Create Table favoritePattern(
   userId         bigint(20)   REFERENCES user(id),

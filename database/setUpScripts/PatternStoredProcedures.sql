@@ -50,3 +50,5 @@ DELIMITER //
 /* purchase pattern handles all database changes on purchase, authenticate*/
 
 /* delete pattern, hard delete if no one has purchased, otherwise soft delete, authenticate*/
+
+/*add and delete image procedures*/
