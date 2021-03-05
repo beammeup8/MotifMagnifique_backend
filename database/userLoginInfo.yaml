@@ -1,3 +1,4 @@
 username: "user"
 password: "password"
 host: "localhost"
+database: "motifMagnifique"

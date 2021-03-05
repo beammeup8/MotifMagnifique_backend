@@ -4,7 +4,7 @@ Create Table user(
   email         VARCHAR(50)/*check for email pattern*/,
   fName         VARCHAR(50) DEFAULT NULL,
   lName         VARCHAR(50) DEFAULT NULL,
-  password      VARCHAR(50),
+  password      VARCHAR(60),
   front_salt    CHAR(50),
   back_salt     CHAR(50),
   PRIMARY KEY(id),
@@ -14,7 +14,7 @@ Create Table user(
 
 Create Table authtoken(
   userId        bigint(20)  REFERENCES user(id),
-  last_accessed TIMESTAMP,
+  last_accessed TIMESTAMP   DEFAULT NOW(),
   token         CHAR(50),
   timeout_len   INT DEFAULT 30,
   PRIMARY KEY(userId)

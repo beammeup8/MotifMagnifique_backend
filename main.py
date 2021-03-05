@@ -12,6 +12,10 @@ def main():
   print("Connected to database")
   print("Creating User connection...")
   userConnector = UserConnector(database)
+  # create a dummy user
+  authtoken = userConnector.createUser("pythonPerson", "fake@email.com", "python", "person", "password", "yyyyy")
+  print(userConnector.getUserDetails('pythonPerson', authtoken))
+  print("Exiting...")
   return 0
 
 if __name__ == '__main__':
