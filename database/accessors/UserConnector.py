@@ -15,15 +15,12 @@ class UserConnector:
     self.databaseConnection.runSQLNoReturn(statement, args)
     
     userId, = self.databaseConnection.runSQL(f"select id from user where username = '{username}'")[0]
-    token = generateAuthToken()
-    statement = f"INSERT INTO authtoken(userId, token) VALUES ('{userId}', '{token}')"
-    self.databaseConnection.runSQLNoReturn(statement)
-    return token
+    return self.__addAuthToken(userId)
 
   def authenticate(self, username, authtoken):
     query = "SELECT userId, last_accessed, timeout_len, Now() FROM user, authtoken WHERE user.username=? and authtoken.token=?"
     result = self.databaseConnection.runSQL(query, (username, authtoken))
-    if len(result) is 1:
+    if len(result) == 1:
       userId, last_time, timeout, now = result[0]
       latest_valid = last_time + timedelta(minutes = timeout)
       if latest_valid > now:
@@ -38,10 +35,29 @@ class UserConnector:
     else:
       return "None"
 
+  def getSalt(self, username):
+    query = "select front_salt, back_salt from user where username=?"
+    result = self.databaseConnection.runSQL(query, (username,))
+    if len(result) == 1:
+      return result[0]
+    return "None"
 
-  def checkPassword(self, password, salt):
-    hashed = hashPassword(password, salt)
-    #TODO actually call the check password stuff
+
+  def checkPassword(self, username, password, salt):
+    salt, hashed = hashPassword(password, salt)
+    query = "select id from user where username=? and password=?"
+    result = self.databaseConnection.runSQL(query, (username, hashed))
+    if len(result) != 1:
+      return ""
+    id, = result[0]
+    return self.__addAuthToken(id)
+
+  def __addAuthToken(self, userId):
+    token = generateAuthToken()
+    statement = f"REPLACE INTO authtoken(userId, token) VALUES ('{userId}', '{token}')"
+    self.databaseConnection.runSQLNoReturn(statement)
+    return token
+    
 
 def generateAuthToken():
     return b64encode(urandom(50)).decode('utf-8')[0:50]

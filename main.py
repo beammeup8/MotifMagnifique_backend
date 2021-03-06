@@ -15,6 +15,8 @@ def main():
   # create a dummy user
   authtoken = userConnector.createUser("pythonPerson", "fake@email.com", "python", "person", "password", "yyyyy")
   print(userConnector.getUserDetails('pythonPerson', authtoken))
+  front_salt, back_salt = userConnector.getSalt('pythonPerson')
+  print(userConnector.checkPassword('pythonPerson', 'password', back_salt))
   print("Exiting...")
   return 0
 
