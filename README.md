@@ -17,3 +17,9 @@ The following tools need to be installed to run this application:
 ```
 python3 main.py
 ```
+
+## Running tests
+All tests should be in a file begining with `test_` and can be run using the following command:
+```
+python3 -m unittest discover -s ./ -p "test_*.py"
+```
