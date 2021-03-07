@@ -24,6 +24,5 @@ class Database:
   def runSQLNoReturn(self, query, parameters = None):
     self.cur.execute(query, parameters)
 
-
   def close_connection(self):
     self.conn.close()
