@@ -15,7 +15,7 @@ class UserConnector:
 
   def createUser(self, username, email, fName, lName, password, front_salt):
     back_salt, hashed_password = hashPassword(password = password)
-    statement = f"INSERT INTO user (username, email, fName, lName, password, front_salt, back_salt) VALUES (?,?,?,?,?,?,?)"
+    statement = f"INSERT INTO user (username, email, fName, lName, password, front_salt, back_salt) VALUES (?,?,?,?,?,?,?) ON DUPICATE KEY 0+0"
     args = (username, email, fName, lName, hashed_password, front_salt, back_salt)
     self.dbCon.runSQLNoReturn(statement, args)
     
