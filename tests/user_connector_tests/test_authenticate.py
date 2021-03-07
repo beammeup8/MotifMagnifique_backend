@@ -4,7 +4,7 @@ from database.Database import Database
 from database.accessors.UserConnector import UserConnector
 import datetime
 
-class TestGetUserDetails(unittest.TestCase):
+class TestAuthenticate(unittest.TestCase):
 
   def setUp(self):
     self.username = 'fakeUser'
