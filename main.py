@@ -2,7 +2,7 @@ import sys
 import os
 curr_dir = os.getcwd()
 sys.path.append(curr_dir)
-from utilities import configFileFunctions
+from utilities import config_file_functions
 from database.Database import Database
 from database.accessors.UserConnector import UserConnector
 

@@ -4,11 +4,11 @@ import sys
 import os
 curr_dir = os.getcwd()
 sys.path.append(curr_dir)
-from utilities import *
+from utilities import config_file_functions
 
 class Database:
   def __init__(self, login_info_file):
-    login_info = configFileFunctions.getYamlFileContents(login_info_file)
+    login_info = config_file_functions.getYamlFileContents(login_info_file)
     self.conn = mariadb.connect(
       user=login_info['username'],
       password=login_info['password'],

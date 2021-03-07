@@ -2,6 +2,11 @@ import bcrypt
 from database.Database import Database
 from datetime import timedelta
 from base64 import b64encode
+import sys
+import os
+curr_dir = os.getcwd()
+sys.path.append(curr_dir)
+from utilities import data_format_functions as dff
 from os import urandom
 
 class UserConnector:
@@ -31,16 +36,22 @@ class UserConnector:
   def getUserDetails(self, username, authtoken):
     if self.authenticate(username, authtoken):
       query = "select username, email, fName,lName from user where username=?"
-      return self.dbCon.runSQL(query, (username,))
+      details = self.dbCon.runSQL(query, (username,))
+      if len(details) == 1:
+        return dff.tuples_to_dict(("username", "email", "fName", "lName"), details[0])
+      elif len(details) > 1:
+        raise Exception("Error in database data: too many items were returned")
+      else:
+        return None
     else:
-      return "None"
+      return None
 
   def getSalt(self, username):
     query = "select front_salt, back_salt from user where username=?"
     result = self.dbCon.runSQL(query, (username,))
     if len(result) == 1:
       return result[0]
-    return "None"
+    return None
 
 
   def checkPassword(self, username, password, salt):
