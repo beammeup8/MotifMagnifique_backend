@@ -3,7 +3,7 @@ from unittest.mock import *
 from database.Database import Database
 from database.accessors.UserConnector import UserConnector
 
-class TestGetUserDetails(unittest.TestCase):
+class TestGetSalt(unittest.TestCase):
 
   def setUp(self):
     self.successfulResult = ('frontSalt', 'backSalt')

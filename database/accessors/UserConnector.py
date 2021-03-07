@@ -55,7 +55,7 @@ class UserConnector:
     query = "select id from user where username=? and password=?"
     result = self.dbCon.runSQL(query, (username, hashed))
     if len(result) != 1:
-      return ""
+      return None
     id, = result[0]
     return self.__addAuthToken(id)
 
