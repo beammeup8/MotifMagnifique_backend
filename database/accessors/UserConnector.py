@@ -25,12 +25,13 @@ class UserConnector:
   def authenticate(self, username, authtoken):
     query = "SELECT userId, last_accessed, timeout_len, Now() FROM user, authtoken WHERE user.username=? and authtoken.token=?"
     result = self.dbCon.runSQL(query, (username, authtoken))
-    if len(result) == 1:
-      userId, last_time, timeout, now = result[0]
-      latest_valid = last_time + timedelta(minutes = timeout)
-      if latest_valid > now:
-        self.dbCon.runSQLNoReturn(f"UPDATE authtoken SET last_accessed = NOW() WHERE userId = '{userId}'")
-        return True
+    if len(result) != 1:
+      return False
+    userId, last_time, timeout, now = result[0]
+    latest_valid = last_time + timedelta(minutes = timeout)
+    if latest_valid > now:
+      self.dbCon.runSQLNoReturn(f"UPDATE authtoken SET last_accessed = NOW() WHERE userId = '{userId}'")
+      return True
     return False
 
   def getUserDetails(self, username, authtoken):
@@ -39,12 +40,7 @@ class UserConnector:
       details = self.dbCon.runSQL(query, (username,))
       if len(details) == 1:
         return dff.tuples_to_dict(("username", "email", "fName", "lName"), details[0])
-      elif len(details) > 1:
-        raise Exception("Error in database data: too many items were returned")
-      else:
-        return None
-    else:
-      return None
+    return None
 
   def getSalt(self, username):
     query = "select front_salt, back_salt from user where username=?"

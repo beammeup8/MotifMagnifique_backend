@@ -25,3 +25,14 @@ class TestGetUserDetails(unittest.TestCase):
     self.user_conn.authenticate = MagicMock(return_value = False)
     result = self.user_conn.getUserDetails('badUsername', 'authtoken')
     self.assertIsNone(result)
+
+  def test_no_results(self):
+    self.database.runSQL.return_value = []
+    result = self.user_conn.getUserDetails('badUsername', 'authtoken')
+    self.assertIsNone(result)
+
+  def test_multiple_results(self):
+    self.database.runSQL.return_value = [self.successfulResult, self.successfulResult]
+    result = self.user_conn.getUserDetails('badUsername', 'authtoken')
+    self.assertIsNone(result)
+    

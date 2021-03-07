@@ -11,12 +11,12 @@ def main():
   database = Database('database/userLoginInfo.yaml')
   print("Connected to database")
   print("Creating User connection...")
-  userConnector = UserConnector(database)
+  user_connector = UserConnector(database)
   # create a dummy user
-  authtoken = userConnector.createUser("pythonPerson", "fake@email.com", "python", "person", "password", "yyyyy")
-  print(userConnector.getUserDetails('pythonPerson', authtoken))
-  front_salt, back_salt = userConnector.getSalt('pythonPerson')
-  print(userConnector.checkPassword('pythonPerson', 'password', back_salt))
+  authtoken = user_connector.createUser("pythonPerson", "fake@email.com", "python", "person", "password", "yyyyy")
+  print(user_connector.getUserDetails('pythonPerson', authtoken))
+  front_salt, back_salt = user_connector.getSalt('pythonPerson')
+  print(user_connector.checkPassword('pythonPerson', 'password', back_salt))
   print("Exiting...")
   return 0
 
