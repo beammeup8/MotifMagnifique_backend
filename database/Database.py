@@ -1,5 +1,4 @@
 import mariadb 
-import logging
 import yaml
 import sys
 import os
