@@ -1,4 +1,5 @@
 import mariadb 
+import logging
 import yaml
 import sys
 import os
@@ -24,7 +25,8 @@ class Database:
       self.cur.execute(queryString, values)
       self.conn.commit()
       return True
-    except:
+    except Exception as e:
+      print(e)
       return False
 
   def handleDuplicateKey(self, table, unique_items):
