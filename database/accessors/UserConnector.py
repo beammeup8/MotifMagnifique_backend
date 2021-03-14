@@ -12,16 +12,18 @@ from os import urandom
 class UserConnector:
   def __init__(self, dbCon):
     self.dbCon = dbCon
+    self.table = "user"
 
   def createUser(self, username, email, fName, lName, password, front_salt):
     back_salt, hashed_password = hashPassword(password = password)
-    statement = f"INSERT INTO user (username, email, fName, lName, password, front_salt, back_salt) VALUES (?,?,?,?,?,?,?) ON DUPICATE KEY 0+0"
+    parameter_names = ["username", "email", "fName", "lName", "password", "front_salt", "back_salt"]
     args = (username, email, fName, lName, hashed_password, front_salt, back_salt)
-    self.dbCon.runSQLNoReturn(statement, args)
+    if self.dbCon.insertInto(self.table, parameter_names, args):
+      userId, = self.dbCon.runSQL("select id from user where username=?", (username,))[0]
+      return self.__addAuthToken(userId)
+    else:
+      return self.dbCon.handleDuplicateKey(self.table, {"username": username, "email": email})
     
-    userId, = self.dbCon.runSQL(f"select id from user where username = '{username}'")[0]
-    return self.__addAuthToken(userId)
-
   def authenticate(self, username, authtoken):
     query = "SELECT userId, last_accessed, timeout_len, Now() FROM user, authtoken WHERE user.username=? and authtoken.token=?"
     result = self.dbCon.runSQL(query, (username, authtoken))
@@ -49,6 +51,12 @@ class UserConnector:
       return result[0]
     return None
 
+  def getUserId(self, username):
+    query = "select id from user where username=?"
+    result = self.dbCon.runSQL(query, (username,))
+    if len(result) == 1:
+      return result[0]
+    return None
 
   def checkPassword(self, username, password, salt):
     salt, hashed = hashPassword(password, salt)
