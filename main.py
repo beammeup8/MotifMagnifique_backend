@@ -5,6 +5,8 @@ sys.path.append(curr_dir)
 from utilities import config_file_functions
 from database.Database import Database
 from database.accessors.UserConnector import UserConnector
+from flask import Flask
+
 
 def main():
   print("Creating database connection...")

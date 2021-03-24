@@ -1,6 +1,6 @@
 # Database
 
-This is a PostgreSQL database. To create a local instance please run the start.sh file on the computer you wish to run it on. 
+This is a MariaDB database. To create a local instance please run the runAllSQL.bash file on the computer you wish to run it on. 
 
 ## Requirements
 

@@ -12,6 +12,7 @@ The following tools need to be installed to run this application:
 * [mariadb](https://mariadb.com/downloads/)
 * [mariadb python connector](https://mariadb.com/resources/blog/how-to-connect-python-programs-to-mariadb/s)
 * py-bcrypt install via pip3
+* [flask](https://flask.palletsprojects.com/en/1.1.x/installation/#install-flask)
 
 ## Running the code
 ```
