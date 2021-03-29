@@ -6,6 +6,7 @@ This is the API for the main backend portion of Motif Magnifique.
 * [python 3](https://www.python.org/)
 * [pip3](https://pip.pypa.io/en/stable/installing/)
 * [flask](https://flask.palletsprojects.com/en/1.1.x/installation/#installation)
+* flask-restful: installed via pip3
 
 ## Starting the API
 Run the following commands:

@@ -1,9 +1,15 @@
 from flask import Blueprint, render_template, abort
-from jinja2 import TemplateNotFound
-simple_page = Blueprint('simple_page', __name__, template_folder='templates')
-@simple_page.route('/test')
-def show():
-    try:
-        return "test"
-    except TemplateNotFound:
-        abort(404)
+from .database.accessors.UserConnector import UserConnector
+
+def construct_blueprint(database):
+    user = Blueprint('user', __name__)
+
+    userConn = UserConnector(database)
+
+    @user.route('/get-salt/<username>', methods=['GET'])
+    def get_salt(username):
+        salts = userConn.getSalt(username)
+        print(salts)
+        return ""
+
+    return user
