@@ -67,7 +67,6 @@ class UserConnector:
         salt, hashed = hashPassword(password, salt)
         query = "select id from user where username=? and password=?"
         result = self.dbCon.runSQL(query, (username, hashed))
-        print(result)
         if len(result) != 1:
             return None
         id, = result[0]
