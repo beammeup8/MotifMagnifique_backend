@@ -23,16 +23,17 @@ def construct_blueprint(database):
 
     @user.route('/new-user', methods=['PUT'])
     def create_user():
-        field_names = ['username', 'email', 'fName', 'lName', 'password', 'front_salt']
+        field_names = ['username', 'email', 'fName',
+                       'lName', 'password', 'front_salt']
         is_valid, validated_fields = validate_params(request.form, field_names)
-        
+
         if is_valid:
             result = userConn.createUser(*validated_fields)
             if isinstance(result, list):
                 return lst_tuple_response(result, DUPLICATE)
             else:
                 return Response(result, CREATED)
-        
+
         return lst_tuple_response(validated_fields, BAD_REQUEST)
 
     return user
