@@ -15,7 +15,7 @@ class UserConnector:
         self.dbCon = dbCon
         self.table = "user"
 
-    def createUser(self, username, email, fName, lName, password, front_salt):
+    def createUser(self, username, email, fName, lName, password, front_salt = ""):
         back_salt, hashed_password = hashPassword(password=password)
         parameter_names = ["username", "email", "fName",
                            "lName", "password", "front_salt", "back_salt"]

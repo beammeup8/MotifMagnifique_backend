@@ -11,16 +11,6 @@ def construct_blueprint(database):
 
     userConn = UserConnector(database)
 
-    @user.route('/salt', methods=['GET'])
-    def get_salt():
-        is_valid, username = validate_param(request.args, 'username')
-        if not is_valid:
-            return lst_tuple_response(username, BAD_REQUEST)
-        salts = userConn.getSalt(username)
-        if salts != None:
-            return salts[0]
-        return Response(NOT_FOUND)
-
     @user.route('/user-details', methods=['GET'])
     def get_user_details():
         field_names = ['username', 'authtoken']
@@ -37,7 +27,7 @@ def construct_blueprint(database):
     @user.route('/new-user', methods=['PUT'])
     def new_user():
         field_names = ['username', 'email', 'fName',
-                       'lName', 'password', 'front_salt']
+                       'lName', 'password']
         is_valid, validated_fields = validate_params(request.form, field_names)
 
         if is_valid:
