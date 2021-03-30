@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, Response
 from ..database.accessors.UserConnector import UserConnector
-from .validators import validate_params
+from .validators import validate_params, validate_param
 import json
 from response_codes import *
+from .response_gen import lst_tuple_response
 
 
 def construct_blueprint(database):
@@ -12,7 +13,9 @@ def construct_blueprint(database):
 
     @user.route('/get-salt', methods=['GET'])
     def get_salt():
-        username = request.args.get('username')
+        is_valid, username = validate_param(request.args, 'username')
+        if not is_valid:
+            return lst_tuple_response(username, BAD_REQUEST)
         salts = userConn.getSalt(username)
         if salts != None:
             return salts[0]
@@ -26,10 +29,10 @@ def construct_blueprint(database):
         if is_valid:
             result = userConn.createUser(*validated_fields)
             if isinstance(result, list):
-                return Response(json.dumps(dict(result)), DUPLICATE)
+                return lst_tuple_response(result, DUPLICATE)
             else:
                 return Response(result, CREATED)
         
-        return Response(json.dumps(dict(validated_fields)), BAD_REQUEST)
+        return lst_tuple_response(validated_fields, BAD_REQUEST)
 
     return user
