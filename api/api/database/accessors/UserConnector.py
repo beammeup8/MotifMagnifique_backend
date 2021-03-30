@@ -31,7 +31,6 @@ class UserConnector:
     def authenticate(self, username, authtoken):
         query = "SELECT userId, last_accessed, timeout_len, Now() FROM user, authtoken WHERE user.username=? and authtoken.token=?"
         result = self.dbCon.runSQL(query, (username, authtoken))
-        print(result)
         if len(result) != 1:
             return False
         userId, last_time, timeout, now = result[0]
@@ -68,6 +67,7 @@ class UserConnector:
         salt, hashed = hashPassword(password, salt)
         query = "select id from user where username=? and password=?"
         result = self.dbCon.runSQL(query, (username, hashed))
+        print(result)
         if len(result) != 1:
             return None
         id, = result[0]

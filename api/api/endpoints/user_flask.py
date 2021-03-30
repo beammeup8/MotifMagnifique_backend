@@ -25,20 +25,17 @@ def construct_blueprint(database):
     def get_user_details():
         field_names = ['username', 'authtoken']
         is_valid, validated_fields = validate_params(request.args, field_names)
-
         if not is_valid:
             return lst_tuple_response(validated_fields, BAD_REQUEST)
         else:
             details = userConn.getUserDetails(*validated_fields)
-            print(details)
             if details != None:
-                print(details)
                 return dict_response(details, OK)
             else:
                 return Response(status = NOT_FOUND)
 
     @user.route('/new-user', methods=['PUT'])
-    def create_user():
+    def new_user():
         field_names = ['username', 'email', 'fName',
                        'lName', 'password', 'front_salt']
         is_valid, validated_fields = validate_params(request.form, field_names)
@@ -49,6 +46,24 @@ def construct_blueprint(database):
                 return lst_tuple_response(result, DUPLICATE)
             else:
                 return Response(result, CREATED)
+
+        return lst_tuple_response(validated_fields, BAD_REQUEST)
+
+    @user.route('/login', methods=['PUT'])
+    def login():
+        field_names = ['username', 'password']
+        is_valid, validated_fields = validate_params(request.form, field_names)
+
+        if is_valid:
+            username = validated_fields[0]
+            password = validated_fields[1]
+            salts = userConn.getSalt(username)
+            if salts == None:
+                return Response(status = NOT_FOUND)
+            result = userConn.checkPassword(username, password, salts[1])
+            if result == None:
+                return Response(status = NOT_FOUND)
+            return result
 
         return lst_tuple_response(validated_fields, BAD_REQUEST)
 
