@@ -32,7 +32,7 @@ def construct_blueprint(database):
             if details != None:
                 return dict_response(details, OK)
             else:
-                return Response(status = NOT_FOUND)
+                return Response(status=NOT_FOUND)
 
     @user.route('/new-user', methods=['PUT'])
     def new_user():
@@ -59,10 +59,10 @@ def construct_blueprint(database):
             password = validated_fields[1]
             salts = userConn.getSalt(username)
             if salts == None:
-                return Response(status = NOT_FOUND)
+                return Response(status=NOT_FOUND)
             result = userConn.checkPassword(username, password, salts[1])
             if result == None:
-                return Response(status = NOT_FOUND)
+                return Response(status=NOT_FOUND)
             return result
 
         return lst_tuple_response(validated_fields, BAD_REQUEST)
