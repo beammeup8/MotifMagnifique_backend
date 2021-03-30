@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, Response
 from ..database.accessors.UserConnector import UserConnector
 from .validators import validate_params
 import json
+from response_codes import *
 
 
 def construct_blueprint(database):
@@ -15,7 +16,7 @@ def construct_blueprint(database):
         salts = userConn.getSalt(username)
         if salts != None:
             return salts[0]
-        return Response(status = 404)
+        return Response(NOT_FOUND)
 
     @user.route('/new-user', methods=['PUT'])
     def create_user():
@@ -25,10 +26,10 @@ def construct_blueprint(database):
         if is_valid:
             result = userConn.createUser(*validated_fields)
             if isinstance(result, list):
-                return Response(json.dumps(dict(result)), status = 409)
+                return Response(json.dumps(dict(result)), DUPLICATE)
             else:
-                return Response(result, status = 201)
+                return Response(result, CREATED)
         
-        return Response(json.dumps(dict(validated_fields)), status = 400)
+        return Response(json.dumps(dict(validated_fields)), BAD_REQUEST)
 
     return user
