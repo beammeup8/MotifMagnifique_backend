@@ -1,5 +1,5 @@
 from flask import Flask
-from .user_flask import construct_blueprint
+from .endpoints.user_flask import construct_blueprint
 from .database.Database import Database
 
 app = Flask(__name__)
