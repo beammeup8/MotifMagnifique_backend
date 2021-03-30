@@ -31,6 +31,7 @@ class UserConnector:
     def authenticate(self, username, authtoken):
         query = "SELECT userId, last_accessed, timeout_len, Now() FROM user, authtoken WHERE user.username=? and authtoken.token=?"
         result = self.dbCon.runSQL(query, (username, authtoken))
+        print(result)
         if len(result) != 1:
             return False
         userId, last_time, timeout, now = result[0]
@@ -74,7 +75,7 @@ class UserConnector:
 
     def __addAuthToken(self, userId):
         token = generateAuthToken()
-        statement = f"REPLACE INTO authtoken(userId, token) VALUES ('{userId}', '{token}')"
+        statement = f"REPLACE INTO authtoken(userId, token) VALUES ({userId}, '{token}')"
         self.dbCon.runSQLNoReturn(statement)
         return token
 

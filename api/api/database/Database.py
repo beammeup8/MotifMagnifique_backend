@@ -13,7 +13,8 @@ class Database:
       user=login_info['username'],
       password=login_info['password'],
       host=login_info['host'],
-      database=login_info['database']
+      database=login_info['database'],
+      autocommit=True
     )
     self.cur = self.conn.cursor()
 
@@ -22,7 +23,6 @@ class Database:
     queryString = f"INSERT INTO {table} {fieldsString} VALUES {valueString}"
     try:
       self.cur.execute(queryString, values)
-      self.conn.commit()
       return True
     except Exception as e:
       print(e)

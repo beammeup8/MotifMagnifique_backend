@@ -3,7 +3,7 @@ from ..database.accessors.UserConnector import UserConnector
 from .validators import validate_params, validate_param
 import json
 from response_codes import *
-from .response_gen import lst_tuple_response
+from .response_gen import lst_tuple_response, dict_response
 
 
 def construct_blueprint(database):
@@ -11,7 +11,7 @@ def construct_blueprint(database):
 
     userConn = UserConnector(database)
 
-    @user.route('/get-salt', methods=['GET'])
+    @user.route('/salt', methods=['GET'])
     def get_salt():
         is_valid, username = validate_param(request.args, 'username')
         if not is_valid:
@@ -20,6 +20,22 @@ def construct_blueprint(database):
         if salts != None:
             return salts[0]
         return Response(NOT_FOUND)
+
+    @user.route('/user-details', methods=['GET'])
+    def get_user_details():
+        field_names = ['username', 'authtoken']
+        is_valid, validated_fields = validate_params(request.args, field_names)
+
+        if not is_valid:
+            return lst_tuple_response(validated_fields, BAD_REQUEST)
+        else:
+            details = userConn.getUserDetails(*validated_fields)
+            print(details)
+            if details != None:
+                print(details)
+                return dict_response(details, OK)
+            else:
+                return Response(status = NOT_FOUND)
 
     @user.route('/new-user', methods=['PUT'])
     def create_user():

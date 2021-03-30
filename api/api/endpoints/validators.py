@@ -21,6 +21,7 @@ def name_validate(name):
 
 
 validation_mapping = {
+    'authtoken': no_validation,
     'email': email_validate,
     'fName': name_validate,
     'lName': name_validate,
@@ -33,7 +34,7 @@ validation_mapping = {
 def validate_param(data, field_name):
     validation_func = validation_mapping.get(field_name)
     value = data.get(field_name)
-    is_valid = validation_func(value)
+    is_valid = value and validation_func(value)
     if not is_valid:
         value = (field_name, value)
     return is_valid, value
