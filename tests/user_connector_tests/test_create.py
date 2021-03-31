@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import *
 from database.Database import Database
-from database.accessors.UserConnector import UserConnector
+from database.accessors.CreateTags import  CreateTags
 import datetime
+
 
 class TestCreate(unittest.TestCase):
 
