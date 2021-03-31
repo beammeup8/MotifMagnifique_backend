@@ -24,6 +24,7 @@ Please use the workspace in [Postman](https://app.getpostman.com/join-team?invit
 Run the following commands:
 ```
 export FLASK_APP=MotifMagnifique_backend/api
+export FLASK_ENV=development
 pip3 install -e api
 flask run
 ```
