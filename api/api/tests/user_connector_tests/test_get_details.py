@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import *
-from database.Database import Database
-from database.accessors.UserConnector import UserConnector
+from api.database.Database import Database
+from api.database.accessors.UserConnector import UserConnector
 
 class TestGetUserDetails(unittest.TestCase):
 

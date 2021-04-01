@@ -4,7 +4,7 @@ import sys
 import os
 curr_dir = os.getcwd()
 sys.path.append(curr_dir)
-from utilities import config_file_functions, data_format_functions
+from api.utilities import config_file_functions, data_format_functions
 
 class Database:
   def __init__(self, login_info_file):
