@@ -1,7 +1,7 @@
 from os import urandom
-from utilities import data_format_functions as dff
+from api.utilities import data_format_functions as dff
 import bcrypt
-from database.Database import Database
+from api.database.Database import Database
 from datetime import timedelta
 from base64 import b64encode
 import sys
