@@ -2,7 +2,7 @@ import sys
 import os
 curr_dir = os.getcwd()
 sys.path.append(curr_dir)
-from utilities import config_file_functions
+from api.utilities import config_file_functions
 from api.database.Database import Database
 from api.database.accessors.UserConnector import UserConnector
 from flask import Flask

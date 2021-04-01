@@ -32,5 +32,5 @@ flask run
 ## Running tests
 All tests should be in a file begining with `test_` and can be run using the following command:
 ```
-python3 -m unittest discover -s ./ -p "test_*.py"
+python3 -m unittest discover -s ./api/api/tests -p "test_*.py"
 ```
