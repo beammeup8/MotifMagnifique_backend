@@ -26,8 +26,11 @@ class TagConnector:
                 self.table, ["name", "value"], (name, value))
             if completed:
                 res = self.dbCon.runSQL(query, (name, value))
+            else:
+                return None
 
         return res[0][0]
 
-    def getAllCatTags(self, name):
-        pass
+    def getTagVals(self, name):
+        query = "select id, value from tag where name=?"
+        return self.dbCon.runSQL(query, (name, ))

@@ -18,6 +18,7 @@ def main():
   user_connector.createUser("username", "email@email.com", "user", "name", "something", "front salt")
   
   tag_connector = TagConnector(database)
+  print(tag_connector.getTagVals("test"))
   print(tag_connector.getCreateTag("test", "testva3"))
 
   print("Exiting...")
