@@ -33,4 +33,8 @@ class TagConnector:
 
     def getTagVals(self, name):
         query = "select id, value from tag where name=?"
-        return self.dbCon.runSQL(query, (name, ))
+        re = self.dbCon.runSQL(query, (name, ))
+
+        if len(re) == 0:
+            return [(), ]
+        return re
