@@ -39,16 +39,32 @@ def validate_param(data, field_name):
         value = (field_name, value)
     return is_valid, value
 
+def validate_optional_param(data, field_name):
+    validation_func = validation_mapping.get(field_name)
+    value = data.get(field_name)
+    if not validation_func(value):
+        return False, (field_name, value)
+    return True, value
 
-def validate_params(data, field_names):
+
+def validate_params(data, field_names, optional_fields = []):
     field_values = []
     invalid = []
+
     for field_name in field_names:
         is_valid, value = validate_param(data, field_name)
         if is_valid:
             field_values.append(value)
         else:
             invalid.append(value)
+
+    for field_name in optional_fields:
+        is_valid, value = validate_param(data, field_name)
+        if not is_valid:
+            invalid.append(value)
+        elif not value == None:
+            field_values.append(value)
+    
     if len(invalid) == 0:
         return True, field_values
     return False, invalid
