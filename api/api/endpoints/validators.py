@@ -19,6 +19,10 @@ def email_validate(email):
 def name_validate(name):
     return True
 
+def pattern_name_validate(pattern_name):
+    # Check for bad words
+    return True
+
 
 validation_mapping = {
     'authtoken': no_validation,
@@ -27,7 +31,8 @@ validation_mapping = {
     'lName': name_validate,
     'password': no_validation,
     'front_salt': no_validation,
-    'username': username_validate
+    'username': username_validate,
+    'pattern_name': pattern_name_validate
 }
 
 

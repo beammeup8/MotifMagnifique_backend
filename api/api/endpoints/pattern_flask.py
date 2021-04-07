@@ -11,7 +11,7 @@ def construct_blueprint(database, userConn):
 
     @pattern.route('/details', methods=['GET'])
     def get_pattern_details():
-        field_names = ['username', 'authtoken', 'patternName']
+        field_names = ['username', 'authtoken', 'patternId']
         is_valid, validated_fields = validate_params(request.args, field_names)
         if not is_valid:
             return lst_tuple_response(validated_fields, BAD_REQUEST)
@@ -19,16 +19,9 @@ def construct_blueprint(database, userConn):
 
     @pattern.route('/new', methods=['PUT'])
     def create_pattern():
-        field_names = ['username', 'authtoken', 'patternName']
-        is_valid, validated_fields = validate_params(request.args, field_names)
-        if not is_valid:
-            return lst_tuple_response(validated_fields, BAD_REQUEST)
-        return {}
-
-    @pattern.route('/edit', methods=['PUT'])
-    def edit_pattern():
-        field_names = ['username', 'authtoken', 'patternName']
-        is_valid, validated_fields = validate_params(request.args, field_names)
+        field_names = ['username', 'authtoken', 'patternId']
+        optional_field_names = ['patternName', 'description', 'tags', 'price', 'link', 'images', 'fabricType']
+        is_valid, validated_fields = validate_params(request.args, field_names, optional_field_names)
         if not is_valid:
             return lst_tuple_response(validated_fields, BAD_REQUEST)
         return {}
