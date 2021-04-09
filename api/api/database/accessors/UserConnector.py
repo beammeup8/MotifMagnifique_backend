@@ -15,7 +15,7 @@ class UserConnector:
         self.dbCon = dbCon
         self.table = "user"
 
-    def createUser(self, username, email, fName, lName, password, front_salt = ""):
+    def createUser(self, username, email, fName, lName, password, front_salt=""):
         back_salt, hashed_password = hashPassword(password=password)
         parameter_names = ["username", "email", "fName",
                            "lName", "password", "front_salt", "back_salt"]
@@ -29,8 +29,9 @@ class UserConnector:
             return self.dbCon.handleDuplicateKey(self.table, {"username": username, "email": email})
 
     def authenticate(self, authtoken):
-        query = "SELECT userId, username, last_accessed, timeout_len, Now() FROM user, authtoken WHERE authtoken.token=?"
-        result = self.dbCon.runSQL(query, (authtoken))
+        print(authtoken)
+        query = "SELECT userId, username, last_accessed, timeout_len, Now() FROM authtoken INNER JOIN (user) ON (authtoken.userId = user.id) WHERE authtoken.token=?"
+        result = self.dbCon.runSQL(query, (authtoken,))
         if len(result) != 1:
             return None
         userId, username, last_time, timeout, now = result[0]
