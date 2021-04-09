@@ -28,25 +28,24 @@ class UserConnector:
         else:
             return self.dbCon.handleDuplicateKey(self.table, {"username": username, "email": email})
 
-    def authenticate(self, username, authtoken):
-        query = "SELECT userId, last_accessed, timeout_len, Now() FROM user, authtoken WHERE user.username=? and authtoken.token=?"
-        result = self.dbCon.runSQL(query, (username, authtoken))
+    def authenticate(self, authtoken):
+        query = "SELECT userId, username, last_accessed, timeout_len, Now() FROM user, authtoken WHERE authtoken.token=?"
+        result = self.dbCon.runSQL(query, (authtoken))
         if len(result) != 1:
-            return False
-        userId, last_time, timeout, now = result[0]
+            return None
+        userId, username, last_time, timeout, now = result[0]
         latest_valid = last_time + timedelta(minutes=timeout)
         if latest_valid > now:
             self.dbCon.runSQLNoReturn(
                 f"UPDATE authtoken SET last_accessed = NOW() WHERE userId = '{userId}'")
-            return True
-        return False
+            return username
+        return None
 
-    def getUserDetails(self, username, authtoken):
-        if self.authenticate(username, authtoken):
-            query = "select username, email, fName,lName from user where username=?"
-            details = self.dbCon.runSQL(query, (username,))
-            if len(details) == 1:
-                return dff.tuples_to_dict(("username", "email", "fName", "lName"), details[0])
+    def getUserDetails(self, username):
+        query = "select username, email, fName,lName from user where username=?"
+        details = self.dbCon.runSQL(query, (username,))
+        if len(details) == 1:
+            return dff.tuples_to_dict(("username", "email", "fName", "lName"), details[0])
         return None
 
     def getSalt(self, username):

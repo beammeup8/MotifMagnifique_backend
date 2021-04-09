@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import *
-from api.database.Database import Database
-from api.database.accessors.UserConnector import UserConnector
+from ...database.Database import Database
+from ...database.accessors.UserConnector import UserConnector
 
 class TestGetSalt(unittest.TestCase):
 
