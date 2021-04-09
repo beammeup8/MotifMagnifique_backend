@@ -10,7 +10,6 @@ class TestGetUserDetails(unittest.TestCase):
     self.database = Mock()
     self.database.runSQL.return_value = [self.successfulResult]
     self.user_conn = UserConnector(self.database)
-    self.user_conn.authenticate = MagicMock(return_value = True)
 
   def test_happy_path(self):
     username, email, fName, lName = self.successfulResult

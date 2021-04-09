@@ -29,7 +29,6 @@ class UserConnector:
             return self.dbCon.handleDuplicateKey(self.table, {"username": username, "email": email})
 
     def authenticate(self, authtoken):
-        print(authtoken)
         query = "SELECT userId, username, last_accessed, timeout_len, Now() FROM authtoken INNER JOIN (user) ON (authtoken.userId = user.id) WHERE authtoken.token=?"
         result = self.dbCon.runSQL(query, (authtoken,))
         if len(result) != 1:
