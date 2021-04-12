@@ -15,6 +15,6 @@ class PatternConnector:
     def __init__(self, dbCon, userConnector):
         self.dbCon = dbCon
         self.table = "pattern"
-        self.userConnector = userConnector
+        self.userConn = userConnector
 
     

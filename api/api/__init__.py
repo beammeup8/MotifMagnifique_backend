@@ -5,6 +5,7 @@ from .endpoints.user_flask import construct_blueprint as make_user_blueprint
 from .endpoints.pattern_flask import construct_blueprint as make_pattern_blueprint
 from .database.Database import Database
 from .database.accessors.UserConnector import UserConnector
+from .database.accessors.PatternConnector import PatternConnector
 
 app = Flask(__name__)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -16,5 +17,7 @@ userConn = UserConnector(database)
 user_flask = make_user_blueprint(database, userConn, auth)
 app.register_blueprint(user_flask, url_prefix='/user')
 
-pattern_flask = make_pattern_blueprint(database, userConn)
+patternConn = PatternConnector(Database, userConn)
+
+pattern_flask = make_pattern_blueprint(database, patternConn, auth)
 app.register_blueprint(pattern_flask, url_prefix='/pattern')

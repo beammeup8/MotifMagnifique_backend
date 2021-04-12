@@ -4,6 +4,8 @@ import re
 def no_validation(item):
     return True
 
+def id_validation(id):
+    return isinstance(id, int) and id > 0
 
 def username_validate(username):
     return True
@@ -32,6 +34,7 @@ validation_mapping = {
     'password': no_validation,
     'front_salt': no_validation,
     'username': username_validate,
+    'pattern_id': id_validation,
     'pattern_name': pattern_name_validate
 }
 
@@ -40,6 +43,7 @@ def validate_param(data, field_name):
     validation_func = validation_mapping.get(field_name)
     value = data.get(field_name)
     is_valid = value and validation_func(value)
+    print(is_valid)
     if not is_valid:
         value = (field_name, value)
     return is_valid, value
