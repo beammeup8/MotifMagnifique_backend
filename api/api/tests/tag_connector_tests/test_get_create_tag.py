@@ -19,9 +19,14 @@ class TestGetCreateTag(unittest.TestCase):
     self.database.runSQL.return_value = [(self.successfulResult, )]
     self.assertEqual(self.tag_conn.getCreateTag(self.name, self.value), self.successfulResult)
 
-  def test_happy_path_not_exists(self):
+  def test_sad_path_not_exists(self):
     self.database.runSQL.side_effect = [[], [(self.successfulResult, )]]
     self.database.insertInto.return_value = True
     self.assertEqual(self.tag_conn.getCreateTag(self.name, self.value), self.successfulResult)
 
+  def test_sad_path_create_fail(self):
+    self.database.runSQL.return_value = []
+    self.database.insertInto.return_value = False
+    self.assertEqual(self.tag_conn.getCreateTag(self.name, self.value), None)
+    
   

@@ -12,7 +12,7 @@ class TestGetTagVals(unittest.TestCase):
       
 
       self.successfulResult = [(5, 'test'), ]
-      self.unsucessfulResult = [(),]
+      self.unsucessfulResult = []
       self.database = Mock()
 
       self.tag_conn = TagConnector(self.database)
@@ -22,7 +22,7 @@ class TestGetTagVals(unittest.TestCase):
       self.assertEqual(self.tag_conn.getTagVals(
           self.name, ), self.successfulResult)
 
-    def test_happy_path_not_exists(self):
-      self.database.runSQL.side_effect = [(),]
+    def test_sad_path_not_exists(self):
+      self.database.runSQL.return_value = []
       self.assertEqual(self.tag_conn.getTagVals(
         self.name, ), self.unsucessfulResult)
