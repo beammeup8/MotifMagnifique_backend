@@ -14,6 +14,7 @@ The following tools need to be installed to run this application:
 * py-bcrypt - install via pip3
 * [flask](https://flask.palletsprojects.com/en/1.1.x/installation/#install-flask)
 * flask-restful - install via pip3
+* flask_httpauth - install via pip3
 * [database instance](api/api/database/README.md)
 
 ## API

@@ -1,28 +1,31 @@
 from flask import Blueprint, render_template, request, Response
+from flask_httpauth import HTTPBasicAuth
+
 from ..database.accessors.UserConnector import UserConnector
 from .validators import validate_params, validate_param
 import json
-from api.endpoints.response_codes import *
+from .response_codes import *
 from .response_gen import lst_tuple_response, dict_response
 
 
-def construct_blueprint(database):
+def construct_blueprint(database, userConn, auth):
     user = Blueprint('user', __name__)
 
-    userConn = UserConnector(database)
+    @auth.verify_token
+    def verify_token(token):
+        return userConn.authenticate(token)
+
 
     @user.route('/user-details', methods=['GET'])
+    @auth.login_required
     def get_user_details():
-        field_names = ['username', 'authtoken']
-        is_valid, validated_fields = validate_params(request.args, field_names)
-        if not is_valid:
-            return lst_tuple_response(validated_fields, BAD_REQUEST)
+        username = auth.current_user()
+        details = userConn.getUserDetails(username)
+        if details != None:
+            return dict_response(details, OK)
         else:
-            details = userConn.getUserDetails(*validated_fields)
-            if details != None:
-                return dict_response(details, OK)
-            else:
-                return Response(status=NOT_FOUND)
+            return Response(status=NOT_FOUND)
+            
 
     @user.route('/new-user', methods=['PUT'])
     def new_user():

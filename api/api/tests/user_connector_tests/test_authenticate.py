@@ -13,21 +13,21 @@ class TestAuthenticate(unittest.TestCase):
     self.validTime = self.now + datetime.timedelta(minutes = self.timeDiff - 1)
     self.invalidTime = self.now + datetime.timedelta(minutes = self.timeDiff + 1)
     
-    self.successfulResult = (5, self.now, self.timeDiff, self.validTime)
+    self.successfulResult = (5, self.username, self.now, self.timeDiff, self.validTime)
     
     self.database = Mock()
     self.database.runSQL.return_value = [self.successfulResult]
     self.user_conn = UserConnector(self.database)
 
   def test_happy_path(self):
-    self.assertTrue(self.user_conn.authenticate(self.username, 'authtoken'))
+    self.assertEqual(self.user_conn.authenticate('authtoken'), self.username)
 
   def test_timed_out(self):
-    self.database.runSQL.return_value = [(5, self.now, self.timeDiff, self.invalidTime)]
-    self.assertFalse(self.user_conn.authenticate(self.username, 'authtoken'))
+    self.database.runSQL.return_value = [(5, self.username, self.now, self.timeDiff, self.invalidTime)]
+    self.assertIsNone(self.user_conn.authenticate('authtoken'))
 
   def test_no_token_entry(self):
     self.database.runSQL.return_value = []
-    self.assertFalse(self.user_conn.authenticate(self.username, 'authtoken'))
+    self.assertIsNone(self.user_conn.authenticate('authtoken'))
 
   
