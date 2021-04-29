@@ -35,6 +35,7 @@ Create Table pattern(
   ownedBy       bigint(20)    REFERENCES user(id),
   price         DOUBLE(10,2) DEFAULT -1.0,
   link          VARCHAR(1000),
+  sizing        ENUM('bra', 'cape', 'child clothing', 'clothing', 'glove', 'hat', 'other', 'quilt', 'scarf'),
   PRIMARY KEY(id),
   CONSTRAINT title_per_user_unique UNIQUE (title, ownedBy)
 );
