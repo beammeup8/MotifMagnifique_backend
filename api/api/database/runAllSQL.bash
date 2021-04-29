@@ -1,9 +1,9 @@
 #!/bin/bash
 pwd
 initialCreationScript=InitialDatabase.sql
-mysql -u root -p motifMagnifique < database/setUpScripts/$initialCreationScript
+mysql -u root -p motifMagnifique < api/api/database/setUpScripts/$initialCreationScript
 echo 'Ran the initial database script'
-fileContents='sudo cat database/userLoginInfo.yaml'
+fileContents='sudo cat api/api/database/userLoginInfo.yaml'
 username=$($fileContents | shyaml get-value username)
 password=$($fileContents | shyaml get-value password)
 
@@ -14,5 +14,5 @@ filesToRun=(
 
 for filename in ${filesToRun[@]};do
   echo 'Running' $filename
-  mysql -u ${username} -ppassword motifMagnifique < database/setUpScripts/$filename
+  mysql -u ${username} -ppassword motifMagnifique < api/api/database/setUpScripts/$filename
 done

@@ -25,7 +25,7 @@ sudo mysql
 
 1. Start the database for local development work using the following command:
 ```
-sudo bash database/runAllSQL.bash
+sudo bash api/api/database/runAllSQL.bash
 ```
 2. Enter your root password when prompted
 3. All sql scripts will be run

@@ -100,6 +100,45 @@ Create Table patternFabricType(
   PRIMARY KEY(pattern, fabricType)
 );
 
+/*clothing sizes*/
+Create Table braSize(
+  band          INT(2),
+  cup           CHAR(2),
+  diff          INT(2),
+  PRIMARY KEY(band, cup)
+);
+
+Create Table braSizePattern(
+  band          INT(2) REFERENCES braSize(band),
+  cup           CHAR(2) REFERENCES braSize(cup),
+  pattern       bigint(20) REFERENCES pattern(id),
+  PRIMARY KEY(band, cup, pattern)
+);
+
+Create Table gloveSize(
+  size          VARCHAR(20),
+  palmCircum    DOUBLE(10,4),
+  PRIMARY KEY(size)
+);
+
+Create Table gloveSizePattern(
+  size          VARCHAR(20) REFERENCES gloveSize(size),
+  pattern       bigint(20) REFERENCES pattern(id),
+  PRIMARY KEY(size, pattern)
+);
+
+Create Table hatSize(
+  usSize        DOUBLE(6,4),
+  headSize      DOUBLE(6,4),
+  PRIMARY KEY(usSize)    
+);
+
+Create Table hatSizePattern(
+  size          VARCHAR(20) REFERENCES hatSize(usSize),
+  pattern       bigint(20) REFERENCES pattern(id),
+  PRIMARY KEY(size, pattern)
+);
+
 /* missing the user who created it and a unique constraint between name and user*/
 Create Table size(
   id            bigint(20) Not Null AUTO_INCREMENT,
